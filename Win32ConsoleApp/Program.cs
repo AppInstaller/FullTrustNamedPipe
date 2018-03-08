@@ -17,7 +17,6 @@ namespace Win32ConsoleApp
     {
         static void Main(string[] args)
         {
-
             // connect to app service and wait until the connection gets closed
             var appServiceExit = new AutoResetEvent(false);
             Talktoappservice();
@@ -61,7 +60,7 @@ namespace Win32ConsoleApp
             }
 
             ValueSet valueSet = new ValueSet();
-            valueSet.Add("Request", "Value");
+            valueSet.Add("Request", "DeviceID");
 
             if (connection != null)
             {

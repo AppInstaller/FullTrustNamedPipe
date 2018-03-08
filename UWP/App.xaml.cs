@@ -20,6 +20,8 @@ using Windows.ApplicationModel.AppService;
 using Windows.Foundation.Collections;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.System.Profile;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=402347&clcid=0x409
 
@@ -66,10 +68,19 @@ namespace SDKTemplate
             ValueSet message = args.Request.Message;
             string text = message["Request"] as string;
 
-            if ("Value" == text)
+            if ("DeviceID" == text)
             {
                 ValueSet returnMessage = new ValueSet();
-                returnMessage.Add("Response", "Hello from UWP Appservice");
+
+                // Get App Specific Hardware ID
+                var ashwid = HardwareIdentification.GetPackageSpecificToken(null).Id;
+                var dataReader = Windows.Storage.Streams.DataReader.FromBuffer(ashwid);
+                byte[] bytes = new byte[ashwid.Length];
+                dataReader.ReadBytes(bytes);
+                string response = "App Specific Hardware ID (ASHWID): " + BitConverter.ToString(bytes);
+
+                //Send ASHWID back over Appservice
+                returnMessage.Add("Response", response);
                 await args.Request.SendResponseAsync(returnMessage);
 
                 //Temporary hack - wait for a few seconds for the named pipe to be set up

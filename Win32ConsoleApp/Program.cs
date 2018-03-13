@@ -111,6 +111,8 @@ namespace Win32ConsoleApp
                     // Write response to the stream.
                     sw.WriteLine("[ECHO]: " + "Hello from Classic Win32 via named pipe");
 
+                    GetCredentialFromLocker();
+
                     // Wait for goodbye
                     echo = sr.ReadLine();
                     Console.WriteLine("[ECHO DAEMON] Recieved message: " + echo);
@@ -126,6 +128,22 @@ namespace Win32ConsoleApp
 
                 pipeServer.Close();
                 Console.WriteLine("[ECHO DAEMON] NamedPipeServerStream closed.");
+            }
+        }
+
+        static void GetCredentialFromLocker()
+        {
+            Windows.Security.Credentials.PasswordCredential credential = null;
+            var vault = new Windows.Security.Credentials.PasswordVault();
+
+            credential = vault.Retrieve("My App", "username");
+            if (credential != null)
+            {
+                Console.WriteLine("GetCredentialFromLocker: " + credential.Password);
+            }
+            else
+            {
+                Console.WriteLine("Could not retrieve password from PasswordVault");
             }
         }
     }

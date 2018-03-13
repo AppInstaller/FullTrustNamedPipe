@@ -72,14 +72,13 @@ namespace SDKTemplate
             {
                 ValueSet returnMessage = new ValueSet();
 
-                // Get App Specific Hardware ID
-                var ashwid = HardwareIdentification.GetPackageSpecificToken(null).Id;
-                var dataReader = Windows.Storage.Streams.DataReader.FromBuffer(ashwid);
-                byte[] bytes = new byte[ashwid.Length];
+                var systemId = SystemIdentification.GetSystemIdForPublisher().Id;
+                var dataReader = Windows.Storage.Streams.DataReader.FromBuffer(systemId);
+                byte[] bytes = new byte[systemId.Length];
                 dataReader.ReadBytes(bytes);
-                string response = "App Specific Hardware ID (ASHWID): " + BitConverter.ToString(bytes);
+                string response = "Publisher System ID (systemId): " + BitConverter.ToString(bytes);
 
-                //Send ASHWID back over Appservice
+                //Send SystemIdentification back over Appservice
                 returnMessage.Add("Response", response);
                 await args.Request.SendResponseAsync(returnMessage);
 

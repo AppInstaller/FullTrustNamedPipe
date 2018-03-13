@@ -39,25 +39,12 @@ namespace BackgroundProcess
             Console.ReadLine();
         }
 
-        static void Credentials()
+        static void WriteCredentials()
         {
-            //string resourceName = "My App";
-
-            PasswordCredential credential = null;
-
+            //Write to Password vault
             var vault = new Windows.Security.Credentials.PasswordVault();
-            //var credentialList = vault.FindAllByResource(resourceName);
-            //if (credentialList.Count > 0)
-            //{
-
-            //    credential = credentialList[0];
-            //    Console.WriteLine("Retrieved from UWP Password Vault - Username: " + credential.UserName + " Password: " + credential.Password);
-            //}
-            //else
-            //{
-                vault.Add(new Windows.Security.Credentials.PasswordCredential("My App", "username", "password"));
-                Console.WriteLine("Wrote username and password to UWP Password Vault");
-            //}
+            vault.Add(new Windows.Security.Credentials.PasswordCredential("My App", "username", "password"));
+            Console.WriteLine("Wrote username and password to UWP Password Vault");            
         }
         
 
@@ -90,8 +77,7 @@ namespace BackgroundProcess
                 // read the message
                 string echo = sr.ReadLine();
                 Console.WriteLine("Message recieved: " + echo);
-
-                Credentials();
+                WriteCredentials();
 
                 sw.WriteLine("Goodbye from UWP full trust component!");
                 Console.WriteLine("Sent Goodbye over named pipe");
